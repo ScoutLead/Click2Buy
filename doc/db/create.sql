@@ -7,7 +7,7 @@ CREATE TABLE "users" (
 	"password" varchar(50) NOT NULL,
 	"city_address" varchar(50) NOT NULL,
 	"street_address" varchar(50) NOT NULL,
-	"role_id" int(50) NOT NULL,
+	"role_id" int NOT NULL,
 	"birthday" DATE,
 	"creation_date" TIMESTAMP NOT NULL,
 	CONSTRAINT users_pk PRIMARY KEY ("id")
@@ -58,7 +58,7 @@ CREATE TABLE "categories" (
 
 CREATE TABLE "languages" (
 	"id" serial NOT NULL,
-	"name" serial(5) NOT NULL,
+	"name" varchar(5) NOT NULL,
 	CONSTRAINT languages_pk PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
