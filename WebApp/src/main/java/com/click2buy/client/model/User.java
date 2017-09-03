@@ -19,6 +19,7 @@ public class User {
     private int id;
 
     @Column(name = "phone")
+    @Phone
     private String phone;
 
     @Column(name = "surname")
