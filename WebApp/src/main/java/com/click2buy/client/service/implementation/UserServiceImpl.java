@@ -8,10 +8,12 @@ import com.click2buy.client.repository.UserRepository;
 import com.click2buy.client.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.HashSet;
 
+@Service("userService")
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
@@ -20,7 +22,7 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Override
-    public User findUserByPhone(int phone) {
+    public User findUserByPhone(String phone) {
         return userRepository.findByPhone(phone);
     }
 

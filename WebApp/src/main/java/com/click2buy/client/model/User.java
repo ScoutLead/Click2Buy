@@ -1,6 +1,9 @@
 package com.click2buy.client.model;
 
+import com.click2buy.client.validator.Phone;
 import org.hibernate.annotations.Type;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -16,7 +19,7 @@ public class User {
     private int id;
 
     @Column(name = "phone")
-    private int phone;
+    private String phone;
 
     @Column(name = "surname")
     private String surname;
@@ -31,6 +34,8 @@ public class User {
     private String email;
 
     @Column(name = "password")
+    @Length(min = 5, message = "*Your password must have at least 5 characters")
+    @NotEmpty(message = "*Please provide your password")
     private String password;
 
     @Column(name = "city_address")
@@ -59,11 +64,11 @@ public class User {
         this.id = id;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(int phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
