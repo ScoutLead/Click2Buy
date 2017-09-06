@@ -1,0 +1,36 @@
+
+.header {
+
+
+}
+.header__navbar {
+    height:50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1rem solid #ccc;
+    border-bottom: 1rem solid #ccc;
+
+ }
+
+.header__navbar__catalog {
+    width: 10%;
+}
+.header__navbar__search {
+    width: 60%;
+}
+.header__navbar__menu {
+    width: 30%;
+    display: flex;
+    justify-content: flex-end;
+
+}
+.header__navbar__menu__items {
+    list-style-type: none;
+    width: 30%;
+    display: flex;
+    justify-content: space-around;
+}
+.header__navbar__menu__items__item a{
+    text-decoration: none;
+}
