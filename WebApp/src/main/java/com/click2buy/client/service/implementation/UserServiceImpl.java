@@ -7,6 +7,7 @@ import com.click2buy.client.repository.RoleRepository;
 import com.click2buy.client.repository.UserRepository;
 import com.click2buy.client.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,12 @@ import java.util.HashSet;
 
 @Service("userService")
 public class UserServiceImpl implements UserService{
+
+    @Qualifier("userRepository")
     @Autowired
     private UserRepository userRepository;
+
+    @Qualifier("roleRepository")
     @Autowired
     private RoleRepository roleRepository;
     @Autowired
@@ -31,7 +36,7 @@ public class UserServiceImpl implements UserService{
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         Role role = roleRepository.findByRole(RoleType.STANDARD_USER);
-        user.setRoles(new HashSet<Role>(Arrays.asList(role)));
+        user.setRoles(new HashSet<>(Arrays.asList(role)));
         userRepository.save(user);
     }
 }
