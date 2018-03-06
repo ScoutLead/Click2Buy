@@ -3,6 +3,7 @@ package com.click2buy.client.controller;
 import com.click2buy.client.model.User;
 import com.click2buy.client.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,15 +18,13 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
-    public ModelAndView login(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
-        return modelAndView;
+    @RequestMapping(value={"/login"}, method = RequestMethod.GET)
+    public ResponseEntity login(){
+        return ResponseEntity.ok().build();
     }
 
 
-    @RequestMapping(value="/registration", method = RequestMethod.GET)
+    @RequestMapping(value="/sign-up", method = RequestMethod.GET)
     public ModelAndView registration(){
         ModelAndView modelAndView = new ModelAndView();
         User user = new User();
