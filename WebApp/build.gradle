@@ -28,6 +28,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
     compile("io.jsonwebtoken:jjwt:0.7.0")
+	compile ("org.flywaydb:flyway-maven-plugin:5.0.7")
 	runtime('org.postgresql:postgresql')
 	compileOnly('org.projectlombok:lombok')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
