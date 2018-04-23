@@ -1,4 +1,4 @@
-package com.click2buy.client.security;
+package com.click2buy.client.security.dto;
 
 public class AccountCredentials {
 
