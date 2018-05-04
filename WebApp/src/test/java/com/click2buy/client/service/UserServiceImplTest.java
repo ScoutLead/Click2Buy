@@ -1,12 +1,15 @@
 package com.click2buy.client.service;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.empty;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
+import com.click2buy.client.model.Role;
+import com.click2buy.client.model.RoleType;
 import com.click2buy.client.model.User;
 import com.click2buy.client.repository.RoleRepository;
 import com.click2buy.client.repository.UserRepository;
@@ -37,6 +40,25 @@ public class UserServiceImplTest {
     bCryptPasswordEncoder = Mockito.mock(BCryptPasswordEncoder.class);
     userService = new UserServiceImpl(userRepository,
         roleRepository, bCryptPasswordEncoder);
+  }
+
+  @Test
+  public void saveUser() {
+    String email = "alex@some.com";
+    User user = new User();
+    user.setEmail(email);
+    user.setPassword("pass");
+    String expectedPass = "pass1";
+    when(bCryptPasswordEncoder.encode(user.getPassword())).thenReturn(expectedPass);
+    Role role = new Role();
+    role.setRole(RoleType.STANDARD_USER);
+    when(roleRepository.findByRole(RoleType.STANDARD_USER)).thenReturn(role);
+    when(userRepository.save(user)).thenReturn(user);
+
+    User actualUser = userService.saveUser(user);
+
+    assertEquals(expectedPass, actualUser.getPassword());
+    assertThat(actualUser.getRoles(), contains(role));
   }
 
 
