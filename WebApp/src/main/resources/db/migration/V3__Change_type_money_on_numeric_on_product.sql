@@ -1,1 +1,0 @@
-ALTER TABLE public.products ALTER COLUMN price TYPE NUMERIC USING price::NUMERIC;
