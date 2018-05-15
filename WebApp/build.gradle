@@ -21,6 +21,12 @@ repositories {
 	mavenCentral()
 }
 
+dependencyManagement {
+	imports {
+		mavenBom 'com.amazonaws:aws-java-sdk-bom:1.11.228'
+	}
+}
+
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -34,6 +40,7 @@ dependencies {
 	compile("org.webjars:jquery:3.2.1")
 	compile("org.webjars:webjars-locator:0.32")
 	compile("org.webjars:font-awesome:4.7.0")
+	compile 'com.amazonaws:aws-java-sdk-s3'
 // https://mvnrepository.com/artifact/org.webjars.bower/popper.js
 	compile group: 'org.webjars.bower', name: 'popper.js', version: '1.12.9'
 

@@ -8,7 +8,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -32,6 +31,18 @@ public class Category {
   @OneToMany(fetch = FetchType.LAZY)
   @JoinColumn(name = "parent")
   private List<Category> children;
+
+  public Category() {
+  }
+
+  public Category(String name, Category parent) {
+    this.name = name;
+    this.parent = parent;
+  }
+
+  public Category(String name) {
+    this.name = name;
+  }
 
   public int getId() {
     return id;
