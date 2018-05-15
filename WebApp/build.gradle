@@ -1,0 +1,44 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.6.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+	compile('org.springframework.boot:spring-boot-starter-web')
+    compile("io.jsonwebtoken:jjwt:0.7.0")
+	compile ("org.flywaydb:flyway-maven-plugin:5.0.7")
+	// https://mvnrepository.com/artifact/org.webjars/bootstrap
+	compile("org.webjars:bootstrap:4.0.0")
+	compile("org.webjars:jquery:3.2.1")
+	compile("org.webjars:webjars-locator:0.32")
+	compile("org.webjars:font-awesome:4.7.0")
+// https://mvnrepository.com/artifact/org.webjars.bower/popper.js
+	compile group: 'org.webjars.bower', name: 'popper.js', version: '1.12.9'
+
+	runtime('org.postgresql:postgresql')
+	compileOnly('org.projectlombok:lombok')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.springframework.security:spring-security-test')
+}
