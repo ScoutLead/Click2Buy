@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "products")
@@ -47,6 +48,9 @@ public class Product {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "category_id")
   private Category category;
+
+  @Transient
+  private GoodsImage headImage;
 
   public int getId() {
     return id;
@@ -126,5 +130,13 @@ public class Product {
 
   public void setCategory(Category category) {
     this.category = category;
+  }
+
+  public GoodsImage getHeadImage() {
+    return headImage;
+  }
+
+  public void setHeadImage(GoodsImage headImage) {
+    this.headImage = headImage;
   }
 }
