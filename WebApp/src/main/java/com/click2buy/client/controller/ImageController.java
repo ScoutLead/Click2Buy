@@ -21,7 +21,7 @@ public class ImageController {
   @RequestMapping(value = "image/{imageName}")
   @ResponseBody
   public ResponseEntity<byte[]> getImage(@PathVariable(value = "imageName") String imageName) throws IOException {
-    return imageService.download(imageName)
+    return imageService.download(imageName + ".png")
       .map(ResponseEntity::ok)
       .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
   }

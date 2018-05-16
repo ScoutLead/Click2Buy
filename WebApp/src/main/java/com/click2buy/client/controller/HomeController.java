@@ -1,7 +1,9 @@
 package com.click2buy.client.controller;
 
+import com.click2buy.client.model.Product;
 import com.click2buy.client.service.CategoryService;
 import com.click2buy.client.service.ProductsService;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,9 @@ public class HomeController {
   public String home(Map<String, Object> model) {
     model.put("message", "hello");
     model.put("categories", categoryService.getRootCategoriesWithChildren());
-    model.put("newest", productsService.getCategoriesNameAndNewestProducts());
+    Map<String, List<Product>> categoriesNameAndNewestProducts = productsService
+      .getCategoriesNameAndNewestProducts();
+    model.put("newest", categoriesNameAndNewestProducts);
     return "home";
   }
 }

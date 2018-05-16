@@ -5,6 +5,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -23,7 +24,8 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 @Service("awsService")
@@ -31,31 +33,33 @@ public class AwsS3ServiceImpl implements AwsS3Service {
 
   private static final String CONTENT_TYPE = "Content-Type: {}";
 
-  @Value("${aws.s3.bucket}")
   private String s3Bucket;
-  @Value("${aws.access.key}")
-  private String accessKey;
-  @Value("${aws.secret.key}")
-  private String secretKey;
-  @Value("${aws.secret.region}")
-  private String region;
-  @Value("${aws.secret.kmsKeyId}")
-  private String kmsKeyId;
 
+  private String accessKey;
+
+  private String secretKey;
+
+  private String region;
 
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
 
   private AmazonS3 amazonS3;
 
-  public AwsS3ServiceImpl() {
+  @Autowired
+  public AwsS3ServiceImpl(Environment env) {
+    accessKey = env.getProperty("aws.access.key");
+    secretKey = env.getProperty("aws.secret.key");
+    s3Bucket = env.getProperty("aws.s3.bucket");
+    region = env.getProperty("aws.secret.region");
+
     if ((accessKey == null) || (secretKey == null)) {
       log.error("AWS credentials are not initialized");
     }
     AWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
     amazonS3 = AmazonS3ClientBuilder.standard()
       .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-      .withRegion(region)
+      .withRegion(Regions.fromName(region))
       .build();
 
     if (!amazonS3.doesBucketExistV2(s3Bucket)) {

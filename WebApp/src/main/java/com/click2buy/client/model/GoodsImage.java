@@ -16,11 +16,21 @@ public class GoodsImage {
   @Column(name = "id")
   private int id;
 
-  @Column(name = "id")
+  @Column(name = "path")
   private String path;
 
-  @Column(name = "isMain")
+  @Column(name = "is_main")
   private boolean main;
+
+  @Column(name = "product_id")
+  private int productId;
+
+  public GoodsImage() {
+  }
+
+  public GoodsImage(String path) {
+    this.path = path;
+  }
 
   public int getId() {
     return id;
@@ -44,5 +54,13 @@ public class GoodsImage {
 
   public void setMain(boolean main) {
     this.main = main;
+  }
+
+  public int getProductId() {
+    return productId;
+  }
+
+  public void setProductId(int productId) {
+    this.productId = productId;
   }
 }
