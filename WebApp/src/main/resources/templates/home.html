@@ -4,6 +4,7 @@
 
 <head>
   <title th:text="#{login.page.name}"></title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/home.css}"/>
   <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
   <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
@@ -14,46 +15,7 @@
 
   <body>
     <div class="container">
-      <nav aria-label="breadcrumb" class="row">
-        <div class="dropdown col">
-          <button th:text="#{main.catalog}"
-                  class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          </button>
-          <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-            <!--<li class="dropdown-divider"></li>-->
-            <li class="dropdown-submenu" th:each="category,iterationStatus  : ${categories}">
-              <a  class="dropdown-item" tabindex="-1" href="#" th:text="${category.name}"></a>
-              <ul class="dropdown-menu" th:if="${not #lists.isEmpty(category.children)}">
-                <th:block th:each="child,iterationStatus1  : ${category.children}">
-                  <a tabindex="-1" href="#" class="dropdown-item" th:text="${child.name}"></a>
-                </th:block>
-              </ul>
-            </li>
-          </ul>
-        </div>
-
-        <div class="input-group mb-3 col">
-          <input type="text" class="form-control" th:attr="placeholder=#{main.search}, aria-label=#{main.search}"
-                 aria-describedby="basic-addon2"/>
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary" th:text="#{main.find}" type="button">
-            </button>
-          </div>
-        </div>
-
-        <div class="col">
-          <a href="#">
-            <i class="fa fa-user fa-lg" ></i>
-          </a>
-          <a href="#">
-            <i class="fa fa-heart fa-lg" aria-hidden="true"></i>
-          </a>
-          <a href="#">
-            <i class="fa fa-shopping-cart fa-lg" aria-hidden="true"></i>
-          </a>
-        </div>
-      </nav>
+      <div th:replace="fragments/header :: header"></div>
 
       <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
         <ol class="carousel-indicators">

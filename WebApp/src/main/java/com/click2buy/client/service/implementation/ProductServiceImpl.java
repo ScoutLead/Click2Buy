@@ -14,6 +14,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service("productService")
@@ -47,6 +49,20 @@ public class ProductServiceImpl implements ProductsService {
           .ifPresent(product::setHeadImage)
       ));
     return listMap;
+  }
+
+  @Override
+  public Page<Product> getProductsByCategory(String category, int page) {
+    return productRepository
+      .findByCategoryName(category, new PageRequest(page, 3))
+      .map(this::addHeadImage);
+  }
+
+  private Product addHeadImage(Product product) {
+    Optional
+      .ofNullable(imageRepository.findByMainAndProductId(true, product.getId()))
+      .ifPresent(product::setHeadImage);
+    return product;
   }
 
   private static <T> Collector<T, ?, List<T>> limitingList(int limit) {

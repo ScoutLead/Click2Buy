@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+  <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+  <script src="/webjars/popper.js/1.12.9/dist/umd/popper.min.js"></script>
+  <script src="/webjars/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  <title th:text="${category}"></title>
+</head>
+<body>
+  <div class="container">
+    <div th:replace="fragments/header :: header"></div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <th:block th:each="cat, i : ${main_categories}">
+          <li class="breadcrumb-item"
+              th:classappend="${i.index == main_categories.size() - 1}?active:nothing"
+              th:utext="${i.index == main_categories.size() - 1}?${cat.name}:
+              '&lt;a href=&quot;#&quot;&gt;' + ${cat.name} + '&lt;/a&gt;'"></li>
+        </th:block>
+      </ol>
+    </nav>
+
+    <h3 th:text="${category}"></h3>
+
+    <div class="row" th:each="r, i : ${goodsByCategory}">
+
+      <div class="col-4" th:each="prod, y : ${r}">
+        <div class="card">
+          <img class="card-img-top"
+               th:src="@{'~/image/' + ${prod.headImage.path}}"
+               alt="Card image cap"/>
+          <div class="card-body">
+            <h5 class="card-title" ><a href="#" th:text="${prod.name}"></a></h5>
+            <h4><span class="badge badge-secondary" th:text="${prod.price}"></span></h4>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <nav aria-label="Page navigation example">
+      <ul class="pagination pagination-lg justify-content-center">
+        <li class="page-item" th:classappend="${current == first} ?'disabled':'nothing'">
+          <a class="page-link"
+             th:href="@{'~/goods/' + ${main_category} + '?page=' + ${current - 1}}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">Previous</span>
+          </a>
+        </li>
+        <th:block th:each="pageIndex, i : ${pages}">
+          <li class="page-item"
+              th:classappend="${pageIndex == current} ?'active':'nothing'">
+            <a class="page-link"
+               th:href="@{'~/goods/' + ${main_category} + '?page=' + ${pageIndex}}"
+               th:text="${pageIndex}"></a></li>
+        </th:block>
+        <li class="page-item" th:classappend="${current == last} ?'disabled':'nothing'">
+          <a class="page-link"
+             th:href="@{'~/goods/' + ${main_category} + '?page=' + ${current + 1}}" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">Next</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+  </div>
+</body>
+</html>

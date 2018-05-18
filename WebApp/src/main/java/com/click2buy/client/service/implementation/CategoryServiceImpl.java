@@ -3,7 +3,9 @@ package com.click2buy.client.service.implementation;
 import com.click2buy.client.model.Category;
 import com.click2buy.client.repository.CategoryRepository;
 import com.click2buy.client.service.CategoryService;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -24,4 +26,11 @@ public class CategoryServiceImpl implements CategoryService {
   public List<Category> getRootCategoriesWithChildren() {
     return categoryRepository.findByParentIsNull();
   }
+
+  @Override
+  public Optional<Category> getCategoryByName(String name) {
+    return categoryRepository.findByName(name);
+  }
+
+
 }
