@@ -1,7 +1,11 @@
 package com.click2buy.client.model;
 
+import static java.util.stream.Collectors.toList;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.IntStream;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -138,5 +142,12 @@ public class Product {
 
   public void setHeadImage(GoodsImage headImage) {
     this.headImage = headImage;
+  }
+
+  public List<Boolean> ratingInStars() {
+    int intRating = (int)Math.round(rating);
+    return IntStream.rangeClosed(1, 5)
+      .boxed()
+      .map(i -> i <= intRating).collect(toList());
   }
 }

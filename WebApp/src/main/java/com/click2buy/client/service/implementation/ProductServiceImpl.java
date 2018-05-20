@@ -1,5 +1,6 @@
 package com.click2buy.client.service.implementation;
 
+import com.click2buy.client.dto.Sorting;
 import com.click2buy.client.model.Category;
 import com.click2buy.client.model.Product;
 import com.click2buy.client.repository.ImageRepository;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 @Service("productService")
@@ -52,9 +54,14 @@ public class ProductServiceImpl implements ProductsService {
   }
 
   @Override
-  public Page<Product> getProductsByCategory(String category, int page) {
+  public Page<Product> getProductsByCategory(String category, int page,
+    Sorting sortingParam) {
+    String[] entityAndDirection = sortingParam.entityName().split("\\.");
+    String entity = entityAndDirection[0];
+    Direction direction = entityAndDirection.length == 1?
+      Direction.DESC: Direction.fromString(entityAndDirection[1]);
     return productRepository
-      .findByCategoryName(category, new PageRequest(page, 3))
+      .findByCategoryName(category, new PageRequest(page, 3, direction, entity))
       .map(this::addHeadImage);
   }
 

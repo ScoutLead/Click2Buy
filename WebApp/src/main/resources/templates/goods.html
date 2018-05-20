@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/goods.css}"/>
   <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
   <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
   <script src="/webjars/popper.js/1.12.9/dist/umd/popper.min.js"></script>
@@ -29,6 +30,28 @@
 
     <h3 th:text="${category}"></h3>
 
+    <div class="row">
+      <div class="form-group form-inline col-4">
+        <h5>Сортування</h5>
+        <div class="dropdown show">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+             data-toggle="dropdown" aria-haspopup="true"
+             aria-expanded="false"
+             th:text="${sortingParamName}"
+          >
+          </a>
+
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <th:block th:each="link: ${sortingLinks}">
+              <a class="dropdown-item" th:href="@{${link.url}}" th:text="${link.name}"></a>
+            </th:block>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
     <div class="row" th:each="r, i : ${goodsByCategory}">
 
       <div class="col-4" th:each="prod, y : ${r}">
@@ -38,6 +61,13 @@
                alt="Card image cap"/>
           <div class="card-body">
             <h5 class="card-title" ><a href="#" th:text="${prod.name}"></a></h5>
+            <div>
+              <th:block th:each="star: ${prod.ratingInStars()}">
+                <span class="fa fa-star"
+                      th:classappend="${star}?'checked':'nothing'"></span>
+              </th:block>
+
+            </div>
             <h4><span class="badge badge-secondary" th:text="${prod.price}"></span></h4>
           </div>
         </div>
@@ -49,7 +79,7 @@
       <ul class="pagination pagination-lg justify-content-center">
         <li class="page-item" th:classappend="${current == first} ?'disabled':'nothing'">
           <a class="page-link"
-             th:href="@{'~/goods/' + ${main_category} + '?page=' + ${current - 1}}" aria-label="Previous">
+             th:href="@{'~/goods/' + ${main_category} + '?page=' + ${current - 1} + '&amp;sort_by=' + ${sortingParam}}" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
             <span class="sr-only">Previous</span>
           </a>
@@ -58,12 +88,12 @@
           <li class="page-item"
               th:classappend="${pageIndex == current} ?'active':'nothing'">
             <a class="page-link"
-               th:href="@{'~/goods/' + ${main_category} + '?page=' + ${pageIndex}}"
+               th:href="@{'~/goods/' + ${main_category} + '?page=' + ${pageIndex} + '&amp;sort_by=' + ${sortingParam}}"
                th:text="${pageIndex}"></a></li>
         </th:block>
         <li class="page-item" th:classappend="${current == last} ?'disabled':'nothing'">
           <a class="page-link"
-             th:href="@{'~/goods/' + ${main_category} + '?page=' + ${current + 1}}" aria-label="Next">
+             th:href="@{'~/goods/' + ${main_category} + '?page=' + ${current + 1} + '&amp;sort_by=' + ${sortingParam}}" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
             <span class="sr-only">Next</span>
           </a>
