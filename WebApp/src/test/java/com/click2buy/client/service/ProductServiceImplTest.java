@@ -49,7 +49,7 @@ public class ProductServiceImplTest {
         getProduct(new Category("w", category3)),
         getProduct(new Category("l")),
         getProduct(category3)));
-    when(imageRepository.findByMainAndProductId(anyInt()))
+    when(imageRepository.findByMainAndProductId(true, anyInt()))
       .thenReturn(new GoodsImage("path"));
 
     Map<String, List<Product>> newestProducts = productService

@@ -31,8 +31,9 @@ public class Product {
   @Column(name = "name")
   private String name;
 
-  @Column(name = "maker")
-  private int maker;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "maker")
+  private Maker maker;
 
   @Column(name = "rating")
   private double rating;
@@ -80,11 +81,11 @@ public class Product {
     this.name = name;
   }
 
-  public int getMaker() {
+  public Maker getMaker() {
     return maker;
   }
 
-  public void setMaker(int maker) {
+  public void setMaker(Maker maker) {
     this.maker = maker;
   }
 
