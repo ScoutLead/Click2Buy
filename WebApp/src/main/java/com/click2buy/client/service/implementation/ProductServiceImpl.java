@@ -1,19 +1,44 @@
 package com.click2buy.client.service.implementation;
 
+import static org.springframework.data.jpa.domain.Specifications.where;
+
+import com.click2buy.client.dto.Sorting;
 import com.click2buy.client.model.Category;
 import com.click2buy.client.model.Product;
 import com.click2buy.client.repository.ImageRepository;
 import com.click2buy.client.repository.ProductRepository;
 import com.click2buy.client.service.ProductsService;
+import com.click2buy.client.utils.Utils;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service("productService")
@@ -47,6 +72,100 @@ public class ProductServiceImpl implements ProductsService {
           .ifPresent(product::setHeadImage)
       ));
     return listMap;
+  }
+
+  @Override
+  public Page<Product> getProductsByCategory(String category, int page,
+    Sorting sortingParam, JsonNode filterQuery) {
+    String[] entityAndDirection = sortingParam.entityName().split("\\.");
+    String entity = entityAndDirection[0];
+    Direction direction = entityAndDirection.length == 1?
+      Direction.DESC: Direction.fromString(entityAndDirection[1]);
+    return productRepository
+      .findAll(where(categoryEquals(category)).and(toSpecification(filterQuery)),
+        new PageRequest(page, 3, direction, entity))
+      .map(this::addHeadImage);
+  }
+
+  private Specification<Product> categoryEquals(String category) {
+    return (Root<Product> root, CriteriaQuery< ?> query, CriteriaBuilder cb) -> {
+      return cb.equal(root.join("category").get("name"), category);
+    };
+  }
+
+  private Specification<Product> toSpecification(JsonNode filterQuery) {
+    return (Root<Product> root, CriteriaQuery< ?> query, CriteriaBuilder cb) -> {
+      if(filterQuery.get("$and") != null) {
+        return cb.and(predicates(filterQuery.get("$and"), root, cb));
+      } else if(filterQuery.fields().hasNext()) {
+        return cb.and(predicates(filterQuery, root, cb));
+      }
+      return cb.conjunction();
+    };
+  }
+
+  private Predicate[] predicates(JsonNode filterQuery, Root<Product> root, CriteriaBuilder cb) {
+    return IntStream.range(0, filterQuery.size())
+      .mapToObj(i -> {
+        JsonNode nodeEntry = filterQuery.get(i) == null? filterQuery: filterQuery.get(i);
+        Entry<String, JsonNode> next = nodeEntry.fields().next();
+        Entry<String, JsonNode> next1 = next.getValue().fields().next();
+        return comparison(next1.getKey(), getFieldName(root, next.getKey()), next1.getValue()).apply(cb);
+      }).toArray(Predicate[]::new);
+  }
+
+  private Path<Object> getFieldName(Root<Product> root, String key) {
+    if(key.equals("maker")) {
+      return root.get(key).get("name");
+    }
+    return root.get(key);
+  }
+
+
+  private Function<CriteriaBuilder, Predicate> comparison(String name, Path fieldName, JsonNode fieldValue) {
+    switch (name) {
+      case "$in": return cb -> fieldName.in(Utils.convertToArray(fieldValue));
+      case "$gte": return cb -> cb.ge(fieldName, fieldValue.asInt());
+      case "$lte":
+      default: return cb -> cb.le(fieldName, fieldValue.asInt());
+    }
+  }
+
+
+
+
+  @Override
+  public Page<Product> getProductsByCategory(String category, int page,
+    Sorting sortingParam) {
+    String[] entityAndDirection = sortingParam.entityName().split("\\.");
+    String entity = entityAndDirection[0];
+    Direction direction = entityAndDirection.length == 1?
+      Direction.DESC: Direction.fromString(entityAndDirection[1]);
+    return productRepository
+      .findByCategoryName(category, new PageRequest(page, 3, direction, entity))
+      .map(this::addHeadImage);
+  }
+
+  @Override
+  public Integer getMinPriceByCategory(String category) {
+    return productRepository.getMinProductPriceByCategoryName(category);
+  }
+
+  @Override
+  public List<String> getMakersByProductCategory(String category) {
+    return productRepository.getMakersOfProductsByCategory(category);
+  }
+
+  @Override
+  public Integer getMaxPriceByCategory(String category) {
+    return productRepository.getMaxPriceByCategoryName(category);
+  }
+
+  private Product addHeadImage(Product product) {
+    Optional
+      .ofNullable(imageRepository.findByMainAndProductId(true, product.getId()))
+      .ifPresent(product::setHeadImage);
+    return product;
   }
 
   private static <T> Collector<T, ?, List<T>> limitingList(int limit) {
