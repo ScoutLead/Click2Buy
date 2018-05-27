@@ -105,13 +105,29 @@ public class GoodsController {
     });
 
     model.put("filterByTags", chosenMakers(filterBy));
-
     model.put("first", 1);
     model.put("pages", pageIndexes(productPage.getTotalPages(), productPage.getNumber() + 1));
     categoryService.getCategoryByName(category)
       .ifPresent(x -> model.put("main_categories", getAncestors(x)));
 
     return "goods";
+  }
+
+  @GetMapping("/{category}/{id}")
+  public String showCommodity(
+    @PathVariable(value = "category") String category,
+    @PathVariable(value = "id") Integer id,
+    Map<String, Object> model) throws IOException {
+
+    model.put("categories", categoryService.getRootCategoriesWithChildren());
+    categoryService.getCategoryByName(category)
+      .ifPresent(x -> model.put("main_categories", getAncestors(x)));
+    return productsService.getProductById(id)
+      .map(pr -> {
+        model.put("product", pr);
+        return "commodity";
+      }
+    ).orElse("notFound");
   }
 
   private Optional<Range> getPrice(String filterBy) {

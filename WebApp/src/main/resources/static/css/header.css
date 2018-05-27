@@ -45,3 +45,15 @@
   -moz-border-radius: 6px 0 6px 6px;
   border-radius: 6px 0 6px 6px;
 }
+
+.bucket-count {
+  position:  absolute;
+  border-radius:  50%;
+  background: #cd323f;
+  color:  white;
+  width: 21px;
+  height: 21px;
+  font-size: 12px;
+  text-align: center;
+  padding: 2px 3px;
+}

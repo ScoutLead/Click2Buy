@@ -12,6 +12,7 @@
   <script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
   <script src="/webjars/popper.js/1.12.9/dist/umd/popper.min.js" ></script>
   <script src="/webjars/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+  <script th:src="@{/js/utils.js}" ></script>
   <script th:inline="javascript">
     $( function() {
       $( "#slider-range" ).slider({
@@ -136,7 +137,7 @@
         <!--Sorting-->
         <div class="row">
           <div class="form-group form-inline col-4">
-            <h5>Сортування</h5>
+            <h5 th:text="#{sorting.name}"></h5>
             <div class="dropdown show">
               <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                  data-toggle="dropdown" aria-haspopup="true"
@@ -162,7 +163,7 @@
                      th:src="@{'~/image/' + ${prod.headImage.path}}"
                      alt="Card image cap"/>
                 <div class="card-body">
-                  <h5 class="card-title" ><a href="#" th:text="${prod.name}"></a></h5>
+                  <h5 class="card-title" ><a th:href="@{{category}/{id}(category=${main_category}, id=${prod.id})}" th:text="${prod.name}"></a></h5>
                   <div>
                     <th:block th:each="star: ${prod.ratingInStars()}">
                 <span class="fa fa-star"

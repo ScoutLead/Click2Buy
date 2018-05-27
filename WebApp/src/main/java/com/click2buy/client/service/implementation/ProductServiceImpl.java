@@ -161,6 +161,11 @@ public class ProductServiceImpl implements ProductsService {
     return productRepository.getMaxPriceByCategoryName(category);
   }
 
+  @Override
+  public Optional<Product> getProductById(Integer id) {
+    return productRepository.findProductById(id);
+  }
+
   private Product addHeadImage(Product product) {
     Optional
       .ofNullable(imageRepository.findByMainAndProductId(true, product.getId()))
