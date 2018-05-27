@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -53,6 +54,10 @@ public class Product {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "category_id")
   private Category category;
+
+  @OneToMany(fetch = FetchType.LAZY)
+  @JoinColumn(name = "product_id")
+  private List<GoodsImage> images;
 
   @Transient
   private GoodsImage headImage;
@@ -143,6 +148,14 @@ public class Product {
 
   public void setHeadImage(GoodsImage headImage) {
     this.headImage = headImage;
+  }
+
+  public List<GoodsImage> getImages() {
+    return images;
+  }
+
+  public void setImages(List<GoodsImage> images) {
+    this.images = images;
   }
 
   public List<Boolean> ratingInStars() {

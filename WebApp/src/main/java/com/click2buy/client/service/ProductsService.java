@@ -5,6 +5,7 @@ import com.click2buy.client.model.Product;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 
 public interface ProductsService {
@@ -20,4 +21,6 @@ public interface ProductsService {
   List<String> getMakersByProductCategory(String category);
 
   Integer getMaxPriceByCategory(String category);
+
+  Optional<Product> getProductById(Integer id);
 }

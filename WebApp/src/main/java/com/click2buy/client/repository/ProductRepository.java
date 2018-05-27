@@ -6,6 +6,7 @@ import com.click2buy.client.model.Product;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,4 +35,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer>,
 
   @Query("SELECT Min(p.price) from Product p WHERE p.category.name = :categoryName")
   int getMinProductPriceByCategoryName(@Param("categoryName") String categoryName);
+
+  Optional<Product> findProductById(Integer id);
 }

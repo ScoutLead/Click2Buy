@@ -1,0 +1,4 @@
+.click-img {
+  cursor: pointer;
+}
+.click-img:hover {opacity: 0.7;}

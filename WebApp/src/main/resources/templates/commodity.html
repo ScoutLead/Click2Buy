@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/utils.css}"/>
+  <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"/>
+  <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+
+  <script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+  <script src="/webjars/popper.js/1.12.9/dist/umd/popper.min.js" ></script>
+  <script src="/webjars/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+  <script th:src="@{/js/utils.js}" ></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  <title>df</title>
+  <script th:inline="javascript">
+    function addProduct(product) {
+      var bucket = cookkies("bucket");
+      if(bucket === "") {
+        document.cookie = "bucket=[" + product + "]";
+      } else if(JSON.parse(bucket).filter(function (x) {return x === product}).length === 0) {
+        var arr = JSON.parse(bucket);
+        arr.push(product)
+        document.cookie = "bucket=" + JSON.stringify(arr);
+      }
+
+      window.location.reload()
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div th:replace="fragments/header :: header"></div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <th:block th:each="cat, i : ${main_categories}">
+          <li class="breadcrumb-item"><a href="#" th:text="${cat.name}"></a></li>
+        </th:block>
+        <li class="breadcrumb-item" th:text="${product.name}"></li>
+      </ol>
+    </nav>
+    <div class="row">
+      <div class="col-1">
+        <div class="card" th:each="image: ${product.images}">
+          <img class="card-img-top click-img" th:src="@{'~/image/' + ${image.path}}"
+               alt="Card image cap">
+          </img>
+        </div>
+      </div>
+      <div class="col-3">s</div>
+      <div class="col-5 offset-2">
+        <div class="row">d</div>
+        <div class="row">d</div>
+        <div class="row">
+          <div class="col-6">Some</div>
+          <div class="col-6" >
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title"
+                    th:text="'$' + ${product.price}"></h5>
+                <h6 class="card-subtitle mb-2 text-muted" th:text="#{product.inStock}"></h6>
+                <p class="card-text">Нова пошта 35 грн</p>
+                <a href="#" th:onclick="'addProduct('+${product.id}+');'" class="btn btn-primary" th:text="#{button.buy}"></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+</body>
+</html>
