@@ -3,8 +3,10 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/utils.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/commodity.css}"/>
   <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"/>
   <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
@@ -18,12 +20,16 @@
   <script th:inline="javascript">
     function addProduct(product) {
       var bucket = cookkies("bucket");
+      var myDate = new Date();
+      myDate.setMonth(myDate.getMonth() + 1);
       if(bucket === "") {
-        document.cookie = "bucket=[" + product + "]";
-      } else if(JSON.parse(bucket).filter(function (x) {return x === product}).length === 0) {
-        var arr = JSON.parse(bucket);
-        arr.push(product)
-        document.cookie = "bucket=" + JSON.stringify(arr);
+        document.cookie = "bucket=" + product + ";expires=" + myDate + ";path=/";
+      } else if(bucket.split("-").filter(function (x) {return x === product.toString()}).length === 0) {
+        var arr = bucket.split("-");
+        arr.push(product);
+        var myDate = new Date();
+        myDate.setMonth(myDate.getMonth() + 1);
+        document.cookie = "bucket=" + arr.join("-") + ";expires=" + myDate + ";path=/";
       }
 
       window.location.reload()
@@ -31,7 +37,7 @@
   </script>
 </head>
 <body>
-  <div class="container">
+  <div class="container page-wrapper">
     <div th:replace="fragments/header :: header"></div>
 
     <nav aria-label="breadcrumb">
@@ -51,27 +57,78 @@
           </img>
         </div>
       </div>
-      <div class="col-3">s</div>
-      <div class="col-5 offset-2">
-        <div class="row">d</div>
-        <div class="row">d</div>
+
+      <div class="col-3">
+        s
+      </div>
+
+      <div class="col-6 offset-1">
         <div class="row">
-          <div class="col-6">Some</div>
-          <div class="col-6" >
+          <div class="col">
+            <h3 th:text="${product.name}"></h3>
+          </div>
+
+        </div>
+        <div class="row">
+
+          <div class="col-4">
+            <th:block th:each="star: ${product.ratingInStars()}">
+                <span class="fa fa-star"
+                      th:classappend="${star}?'checked':'nothing'"></span>
+            </th:block>
+          </div>
+
+          <div class="col-4">
+            <a href="#" th:text="#{addToFavourite}"></a>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-7">
+            <div>Діагональ екрану: 5.8";</div>
+            <div>Роздільна здатність дисплея: 2436x1125;</div>
+            <div>Камера: 12 Мп;</div>
+            <div>Кількість ядер: 6;</div>
+            <div>Стандарт захисту: IP67;</div>
+            <div>Оперативна пам'ять: 3 Гб;</div>
+            <a href="#">Характеристики</a>
+          </div>
+          <div class="col-5" >
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title"
                     th:text="'$' + ${product.price}"></h5>
                 <h6 class="card-subtitle mb-2 text-muted" th:text="#{product.inStock}"></h6>
                 <p class="card-text">Нова пошта 35 грн</p>
-                <a href="#" th:onclick="'addProduct('+${product.id}+');'" class="btn btn-primary" th:text="#{button.buy}"></a>
+                <a href="#" th:onclick="'addProduct('+${product.id}+');'" class="btn btn-primary btn-lg" th:text="#{button.buy}"></a>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div class="row">
+     <div class="col">
+       <ul class="nav nav-tabs">
+         <li class="nav-item">
+           <a class="nav-link active" data-toggle="tab" href="#tab-about-goods" th:text="#{tabs.aboutGoods}"></a>
+         </li>
+         <li class="nav-item">
+           <a class="nav-link" data-toggle="tab" href="#tab-characters" th:text="#{tabs.characters}"></a>
+         </li>
+         <li class="nav-item">
+           <a class="nav-link" data-toggle="tab" href="#tab-accessories" th:text="#{tabs.accessories}"></a>
+         </li>
+       </ul>
 
+       <div class="tab-content">
+           <div class="tab-pane container active" id="tab-about-goods">sdf...</div>
+           <div class="tab-pane container fade" id="tab-characters">cvb</div>
+           <div class="tab-pane container fade" id="tab-accessories">dfbb</div>
+     </div>
+
+     </div>
+    </div>
   </div>
 
 

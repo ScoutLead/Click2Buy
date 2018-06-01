@@ -11,6 +11,7 @@ import com.click2buy.client.service.CategoryService;
 import com.click2buy.client.service.ProductsService;
 import com.click2buy.client.utils.FilterUrlBuilder;
 import com.click2buy.client.utils.Range;
+import com.click2buy.client.utils.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -99,14 +100,14 @@ public class GoodsController {
         model.put("curMaxPrice", r.max);
         return 1;
       }).orElseGet(() -> {
-        model.put("curMinPrice", model.get("minPrice"));
-        model.put("curMaxPrice", model.get("maxPrice"));
-        return null;
+      model.put("curMinPrice", model.get("minPrice"));
+      model.put("curMaxPrice", model.get("maxPrice"));
+      return null;
     });
 
     model.put("filterByTags", chosenMakers(filterBy));
     model.put("first", 1);
-    model.put("pages", pageIndexes(productPage.getTotalPages(), productPage.getNumber() + 1));
+    model.put("pages", Utils.pageIndexes(productPage.getTotalPages(), productPage.getNumber() + 1));
     categoryService.getCategoryByName(category)
       .ifPresent(x -> model.put("main_categories", getAncestors(x)));
 
@@ -124,10 +125,10 @@ public class GoodsController {
       .ifPresent(x -> model.put("main_categories", getAncestors(x)));
     return productsService.getProductById(id)
       .map(pr -> {
-        model.put("product", pr);
-        return "commodity";
-      }
-    ).orElse("notFound");
+          model.put("product", pr);
+          return "commodity";
+        }
+      ).orElse("notFound");
   }
 
   private Optional<Range> getPrice(String filterBy) {
@@ -155,13 +156,13 @@ public class GoodsController {
       JsonNode jsonNode = new ObjectMapper().readTree(filterBy);
       JsonNode jsonNode1 = jsonNode.findParents(price).get(0);
       Iterator<JsonNode> in;
-      if(jsonNode1 != null) {
+      if (jsonNode1 != null) {
         in = jsonNode1.get(price).get("$in").iterator();
       } else {
         in = jsonNode.findParents(price).get(0).get("$in").iterator();
       }
       List<String> makers = new ArrayList<>();
-      while(in.hasNext()) {
+      while (in.hasNext()) {
         makers.add(in.next().asText());
       }
       return makers;
@@ -187,22 +188,6 @@ public class GoodsController {
     return sortBy;
   }
 
-  private List<Integer> pageIndexes(int totalPages, int currentPage) {
-    if (totalPages <= 3 && currentPage <= totalPages) {
-      return generateIndexes(1, totalPages);
-    }
-    if (currentPage >= totalPages - 1) {
-      return generateIndexes(totalPages - 2, totalPages);
-    }
-    if (currentPage == 1) {
-      return generateIndexes(currentPage, currentPage + 2);
-    }
-    return generateIndexes(currentPage - 1, currentPage + 1);
-  }
-
-  private List<Integer> generateIndexes(int first, int last) {
-    return IntStream.rangeClosed(first, last).boxed().collect(toList());
-  }
 
   private List<List<Product>> groupByThree(List<Product> products) {
     List<List<Product>> arr = new ArrayList<>();

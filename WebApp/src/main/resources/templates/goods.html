@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/goods.css}"/>
   <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
@@ -52,7 +53,7 @@
   <title th:text="${category}"></title>
 </head>
 <body>
-  <div class="container">
+  <div class="container page-wrapper">
     <div th:replace="fragments/header :: header"></div>
 
     <nav aria-label="breadcrumb">
@@ -169,7 +170,6 @@
                 <span class="fa fa-star"
                       th:classappend="${star}?'checked':'nothing'"></span>
                     </th:block>
-
                   </div>
                   <h4><span class="badge badge-secondary" th:text="${prod.price}"></span></h4>
                 </div>

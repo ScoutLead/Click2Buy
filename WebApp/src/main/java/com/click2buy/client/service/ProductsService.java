@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 
 public interface ProductsService {
@@ -23,4 +24,6 @@ public interface ProductsService {
   Integer getMaxPriceByCategory(String category);
 
   Optional<Product> getProductById(Integer id);
+
+  List<Product> findProductsByIds(Set<Integer> id);
 }
