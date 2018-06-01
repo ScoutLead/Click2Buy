@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/utils.css}"/>
+  <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"/>
+  <script src="/webjars/jquery/3.2.1/jquery.min.js"></script>
+
+  <script src="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+  <script src="/webjars/popper.js/1.12.9/dist/umd/popper.min.js" ></script>
+  <script src="/webjars/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+  <script th:src="@{/js/utils.js}" ></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+  <title th:text="#{bucket.name}"></title>
+  <script th:inline="javascript">
+
+    $( function() {
+        setSum(sum())
+    } );
+
+    function setSum(sum) {
+      var t = [[#{together}]];
+      $('#sum').text(t + " " + sum + " грн")
+    }
+
+    function sum() {
+      var goods = [[${goodsInBucketJson}]];
+      const json = JSON.parse(goods);
+      return Object.keys(json).map(function(key, index) {
+        return json[key] * $('#count' + key).val();
+      }).reduce(function(total, x) {return total + x});
+    }
+
+    function changeCount(id, price) {
+      $(id + 'Label').text($(id).val() * price);
+      setSum(sum())
+    }
+
+  </script>
+</head>
+<body>
+  <div class="container page-wrapper">
+    <div th:replace="fragments/header :: header"></div>
+
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item" th:text="#{bucket.name}"></li>
+      </ol>
+    </nav>
+
+    <h5 th:text="#{bucket.name}"></h5>
+
+    <div class="container">
+
+      <div class="row" th:each="prod, i : ${goodsInBucket}">
+
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <img class="col-4" style="height: 200px"
+                   th:src="@{'~/image/' + ${prod.headImage.path}}"
+                   alt="Card image cap"/>
+              <div class="col-8">
+                <div class="row">
+                  <h5 th:text="${prod.name}"></h5>
+                </div>
+                <div class="row align-items-center">
+                  <div class="col-6">
+                    <h6 th:text="#{bucket.privePerGoods} + ' ' + ${prod.price}"></h6>
+                  </div>
+                  <input th:onchange="'changeCount(\'#count' + ${prod.id} + '\', ' + ${prod.price} + ');'"  value="1" type="number" class="form-control offset-2 col-2" th:id="count + ${prod.id}"/>
+                  <label class="col-2" th:id="count + ${prod.id} + Label"  th:text="${prod.price}"></label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <button type="button" class="btn btn-default col-4" th:text="#{continueBuying}"></button>
+        <div class="col-4 offset-4">
+          <h6 th:text="#{together}" id="sum"></h6>
+          <button aria-controls="collapseExample"
+                  data-toggle="collapse"
+                  data-target="#collapseExample"
+                  type="button" class="btn btn-default" th:text="#{applyOrder}"></button>
+        </div>
+      </div>
+
+      <div class="row collapse" id="collapseExample">
+        <h5 th:text="#{applyingOrder}"></h5>
+        <h4 th:text="#{receiver}"></h4>
+        <form>
+          <div class="form-row">
+            <div class="form-group col-4">
+              <label for="inputEmail4" th:text="#{input.email}"></label>
+              <input type="email" class="form-control" id="inputEmail4"
+                     th:placeholder="#{input.email}"/>
+            </div>
+            <div class="form-group col-4">
+              <label for="inputPhone4" th:text="#{input.phone}"></label>
+              <input type="text" class="form-control" id="inputPhone4" th:placeholder="#{input.phone}"/>
+            </div>
+            <div class="form-group col-4">
+              <label for="inputName4" th:text="#{input.name}"></label>
+              <input type="text" class="form-control" id="inputName4" th:placeholder="#{input.name}"/>
+            </div>
+          </div>
+          <div class=" form-row">
+            <div class="form-group row col-4">
+              <label for="inputState" class="col-6 col-form-label" th:text="#{label.delivery}"></label>
+              <div class="col-6">
+                <select id="inputState" class="form-control">
+                  <option th:selected = "${true}">Choose...</option>
+                  <option>...</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-12">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"/>
+                <label class="form-check-label" for="inlineRadio1" th:text="#{radio.delivery.courier}"></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input"
+                       data-toggle="collapse"
+                       data-target="#multiCollapseExample1"
+                       type="radio" name="inlineRadioOptions"
+                       aria-controls="multiCollapseExample1"
+                       id="inlineRadio2" value="option2"/>
+                <label class="form-check-label" for="inlineRadio2" th:text="#{radio.delivery.novaPoshta}"></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input"
+                       data-toggle="collapse"
+                       data-target="#multiCollapseExample2"
+                       aria-controls="multiCollapseExample2"
+                       type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" />
+                <label class="form-check-label" for="inlineRadio3" th:text="#{radio.delivery.ukrposhta}"></label>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="collapse multi-collapse" id="multiCollapseExample1">
+              <div class=" form-row">
+                <div class="form-group col-4">
+                  <label for="inputStorage" th:text="#{label.delivery.storage}"></label>
+                    <select id="inputStorage" class="form-control">
+                      <option th:selected = "${true}">Вибрати...</option>
+                      <option>...</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+            <div class="collapse multi-collapse" id="multiCollapseExample2">
+              <div class="form-row">
+                <div class="form-group col-4">
+                  <label for="inputAddress4" th:text="#{input.address}"></label>
+                  <input type="email" class="form-control" id="inputAddress4"
+                         th:placeholder="#{input.address}"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!--Оплата-->
+          <div class="form-row">
+            <label th:text="#{pay}"></label>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-12">
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineSellingBy1" value="option1"/>
+                <label class="form-check-label" for="inlineSellingBy1" th:text="#{radio.selling.overhead}"></label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineSellingBy2" value="option2"/>
+                <label class="form-check-label" for="inlineSellingBy2" th:text="#{radio.selling.ecard}"></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="offset-10 col-10">
+              <button type="submit" class="btn btn-primary" th:text="#{button.confirm}"></button>
+            </div>
+          </div>
+
+
+        </form>
+      </div>
+
+
+    </div>
+
+
+  </div>
+</body>
+</html>

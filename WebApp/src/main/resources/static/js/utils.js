@@ -1,5 +1,5 @@
 $( function() {
-  $(".bucket-count").text(JSON.parse(cookkies("bucket")).length)
+  $(".bucket-count").text(cookkies("bucket").split("-").length)
 } );
 function cookkies(cname) {
   var name = cname + "=";

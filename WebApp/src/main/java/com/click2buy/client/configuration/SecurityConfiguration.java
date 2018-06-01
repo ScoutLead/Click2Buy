@@ -56,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
       .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
       // don't create session
-      .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+      //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
       .authorizeRequests()
 
@@ -94,6 +94,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         HttpMethod.GET,
         "/",
         "/*.html",
+        "/bucket/**",
         "/image/**",
         "/goods/**",
         "/favicon.ico",

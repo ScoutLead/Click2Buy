@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,4 +38,6 @@ public interface ProductRepository extends JpaRepository<Product, Integer>,
   int getMinProductPriceByCategoryName(@Param("categoryName") String categoryName);
 
   Optional<Product> findProductById(Integer id);
+
+  List<Product> findProductByIdIn(Set<Integer> ids);
 }
