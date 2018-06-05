@@ -1,6 +1,15 @@
 $( function() {
-  $(".bucket-count").text(cookkies("bucket").split("-").length)
+  $(".bucket-count").text(ids(cookkies("bucket")))
 } );
+
+function ids(bucket) {
+  const ids = bucket.split("-");
+  if(ids[0] === "") {
+    return "";
+  } else {
+    return ids.length
+  }
+}
 function cookkies(cname) {
   var name = cname + "=";
   var decodedCookie = decodeURIComponent(document.cookie);

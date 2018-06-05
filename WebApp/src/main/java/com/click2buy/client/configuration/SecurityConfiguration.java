@@ -100,6 +100,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/favicon.ico",
         "/**/*.html",
         "/**/*.css",
+        "/**/*.png",
         "/**/*.js"
       )
 

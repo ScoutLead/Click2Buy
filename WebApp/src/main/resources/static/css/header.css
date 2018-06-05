@@ -62,10 +62,11 @@
 
 .header {
   background: rgba(255, 255, 255, 0.86);
-  height: 60px;
+  height: 120px;
   display: flex;
   align-items: center;
   padding: 0 10px;
+  flex-direction: column;
 }
 
 .header-nav {
@@ -73,6 +74,12 @@
   margin: 0!important;
   display: flex;
   justify-content: space-between;
+}
+
+.header-entry {
+  width: 100%;
+  display: flex;
+  align-items: center;
 }
 
 .header-info {
@@ -100,21 +107,44 @@
 }
 
 .search {
-  border: none!important;
-  border-radius: 0!important;
-  background: #f8f2e1;
+
 }
 
 .search-control {
   border: none!important;
-  background: #ffdb00!important;
-  color: #868686!important;
+  background: rgba(231, 130, 0, 0.85)!important;;
+  color: rgb(255, 255, 255) !important;
   font-weight: bold!important;
 }
 
 .catalog-toggler {
-  background: transparent!important;
-  color: #868686!important;
-  border: 1px solid #868686 !important;
+  background: rgba(231, 130, 0, 0.85)!important;
+  font-size: 150%;
+  border: transparent !important;
   min-width: 135px;
+}
+
+.logo {
+  background-image: url('../images/logo.png');
+  height: 50px;
+  width: 190px;
+  background-size: cover;
+}
+
+.header-details {
+  display: flex;
+}
+
+.header-details div {
+  margin-left: 20px;
+}
+
+.delivery {
+  text-decoration: underline;
+  color: #00a1ff;
+}
+
+.call {
+  color: rgb(231, 130, 0);
+  font-size: 150%;
 }

@@ -5,6 +5,7 @@
   <meta charset="UTF-8"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/utils.css}"/>
   <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"/>
@@ -119,8 +120,8 @@
               <label for="inputState" class="col-6 col-form-label" th:text="#{label.delivery}"></label>
               <div class="col-6">
                 <select id="inputState" class="form-control">
-                  <option th:selected = "${true}">Choose...</option>
-                  <option>...</option>
+                  <option th:selected = "${true}">Львів</option>
+                  <option>Київ</option>
                 </select>
               </div>
             </div>
@@ -194,7 +195,7 @@
 
           <div class="form-group row">
             <div class="offset-10 col-10">
-              <button type="submit" class="btn btn-primary" th:text="#{button.confirm}"></button>
+              <a th:href="@{/successOrder.html}" class="btn btn-primary" th:text="#{button.confirm}"></a>
             </div>
           </div>
 
@@ -204,8 +205,8 @@
 
 
     </div>
-
-
+    <div th:replace="fragments/footer :: footer"></div>
   </div>
+
 </body>
 </html>

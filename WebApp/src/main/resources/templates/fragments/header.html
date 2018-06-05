@@ -12,11 +12,23 @@
 </head>
 <body>
 <div th:fragment="header" class="header">
+  <div class="header-entry">
+    <a th:href="@{/}"><div class="logo"></div></a>
+    <div class="header-details">
+      <div>
+        <div class="call">(044) 537-02-22</div>
+        <div>8:00 - 20:00</div>
+      </div>
+
+    </div>
+  </div>
   <nav aria-label="breadcrumb" class="row header-nav">
     <div class="dropdown">
-      <button th:text="#{main.catalog}"
+      <button th:inline="text"
               class="btn btn-secondary dropdown-toggle catalog-toggler" type="button" id="dropdownMenu1"
               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+        [[#{main.catalog}]]
       </button>
       <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
         <!--<li class="dropdown-divider"></li>-->

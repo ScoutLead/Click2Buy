@@ -76,7 +76,7 @@ public class ProductServiceImpl implements ProductsService {
       Direction.DESC : Direction.fromString(entityAndDirection[1]);
     return productRepository
       .findAll(where(categoryEquals(category)).and(toSpecification(filterQuery)),
-        new PageRequest(page, 3, direction, entity))
+        new PageRequest(page, 21, direction, entity))
       .map(this::addHeadImage);
   }
 
@@ -102,9 +102,16 @@ public class ProductServiceImpl implements ProductsService {
       .mapToObj(i -> {
         JsonNode nodeEntry = filterQuery.get(i) == null ? filterQuery : filterQuery.get(i);
         Entry<String, JsonNode> next = nodeEntry.fields().next();
-        Entry<String, JsonNode> next1 = next.getValue().fields().next();
-        return comparison(next1.getKey(), getFieldName(root, next.getKey()), next1.getValue())
-          .apply(cb);
+        if(next.getValue().isArray()) {
+          return comparison(next.getKey(), getFieldName(root, next.getKey()), next.getValue())
+            .apply(cb);
+        } else {
+          Entry<String, JsonNode> next1 = next.getValue().fields().next();
+          return comparison(next1.getKey(), getFieldName(root, next.getKey()), next1.getValue())
+            .apply(cb);
+        }
+
+
       }).toArray(Predicate[]::new);
   }
 

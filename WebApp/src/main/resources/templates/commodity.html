@@ -5,6 +5,7 @@
   <meta charset="UTF-8"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/utils.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/commodity.css}"/>
   <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
@@ -34,6 +35,17 @@
 
       window.location.reload()
     }
+
+    $(document).ready(function() {
+      $("div.bhoechie-tab-menu>div.list-group>a").click(function(e) {
+        e.preventDefault();
+        $(this).siblings('a.active').removeClass("active");
+        $(this).addClass("active");
+        var index = $(this).index();
+        $("div.bhoechie-tab>div.bhoechie-tab-content").removeClass("active");
+        $("div.bhoechie-tab>div.bhoechie-tab-content").eq(index).addClass("active");
+      });
+    });
   </script>
 </head>
 <body>
@@ -50,63 +62,117 @@
       </ol>
     </nav>
     <div class="row">
-      <div class="col-1">
-        <div class="card" th:each="image: ${product.images}">
-          <img class="card-img-top click-img" th:src="@{'~/image/' + ${image.path}}"
-               alt="Card image cap">
-          </img>
-        </div>
-      </div>
-
-      <div class="col-3">
-        s
-      </div>
-
-      <div class="col-6 offset-1">
+      <div class="container">
         <div class="row">
-          <div class="col">
-            <h3 th:text="${product.name}"></h3>
+          <div class="col-lg-5 col-md-5 col-sm-8 col-xs-9 bhoechie-tab-container">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
+              <div class="list-group">
+                <a href="#" class="list-group-item active text-center">
+                  <div class="preview" style="background-image: url(https://i.eldorado.ua//497x506/goods_images/1038946/6180963-1527690410.jpeg);">
+                  </div>
+                </a>
+                <a href="#" class="list-group-item text-center" >
+                  <div class="preview" style="background-image: url(https://i.eldorado.ua//497x506/goods_images/1038946/6180955-1527690343.jpg);">
+                  </div>
+                </a>
+                <a href="#" class="list-group-item text-center">
+                  <div class="preview" style="background-image: url(https://i.eldorado.ua//497x506/goods_images/1038946/6180951-1527690326.jpg);">
+                  </div>
+                </a>
+                <a href="#" class="list-group-item text-center">
+                  <div class="preview" style="background-image: url(https://i.eldorado.ua//497x506/goods_images/1038946/6180959-1527690356.jpg);">
+                  </div>
+                </a>
+                <a href="#" class="list-group-item text-center">
+                  <div class="preview" style="background-image: url(https://i.eldorado.ua//497x506/goods_images/1038946/6180953-1527690336.jpeg);">
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 bhoechie-tab">
+              <div class="bhoechie-tab-content active">
+                <div class="asset" style="background-image: url(https://i.eldorado.ua//497x506/goods_images/1038946/6180963-1527690410.jpeg);">
+                </div>
+              </div>
+              <div class="bhoechie-tab-content">
+                <div class="asset" style="background-image: url(https://i.eldorado.ua//497x506/goods_images/1038946/6180955-1527690343.jpg);">
+                </div>
+              </div>
+
+              <div class="bhoechie-tab-content">
+                <div class="asset" style="background-image: url(https://i.eldorado.ua//497x506/goods_images/1038946/6180951-1527690326.jpg);">
+                </div>
+              </div>
+              <div class="bhoechie-tab-content">
+                <div class="asset" style="background-image: url(https://i.eldorado.ua//497x506/goods_images/1038946/6180959-1527690356.jpg);">
+                </div>
+              </div>
+              <div class="bhoechie-tab-content">
+                <div class="asset" style="background-image: url(https://i.eldorado.ua//497x506/goods_images/1038946/6180953-1527690336.jpeg);">
+                </div>
+              </div>
+            </div>
           </div>
+          <div class="characteristics col-5 offset-1">
+            <div class="row">
+              <div class="col">
+                <h3 th:text="${product.name}"></h3>
+              </div>
 
-        </div>
-        <div class="row">
+            </div>
+            <div class="row">
 
-          <div class="col-4">
-            <th:block th:each="star: ${product.ratingInStars()}">
+              <div class="col-4">
+                <th:block th:each="star: ${product.ratingInStars()}">
                 <span class="fa fa-star"
                       th:classappend="${star}?'checked':'nothing'"></span>
-            </th:block>
-          </div>
+                </th:block>
+              </div>
 
-          <div class="col-4">
-            <a href="#" th:text="#{addToFavourite}"></a>
-          </div>
+              <div class="col-4">
+                <a href="#" th:text="#{addToFavourite}"></a>
+              </div>
 
-        </div>
-        <div class="row">
-          <div class="col-7">
-            <div>Діагональ екрану: 5.8";</div>
-            <div>Роздільна здатність дисплея: 2436x1125;</div>
-            <div>Камера: 12 Мп;</div>
-            <div>Кількість ядер: 6;</div>
-            <div>Стандарт захисту: IP67;</div>
-            <div>Оперативна пам'ять: 3 Гб;</div>
-            <a href="#">Характеристики</a>
-          </div>
-          <div class="col-5" >
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title"
-                    th:text="'$' + ${product.price}"></h5>
-                <h6 class="card-subtitle mb-2 text-muted" th:text="#{product.inStock}"></h6>
-                <p class="card-text">Нова пошта 35 грн</p>
-                <a href="#" th:onclick="'addProduct('+${product.id}+');'" class="btn btn-primary btn-lg" th:text="#{button.buy}"></a>
+            </div>
+            <div class="row">
+              <div class="col-7">
+                <div>Діагональ екрану: 5.8";</div>
+                <div>Роздільна здатність дисплея: 2436x1125;</div>
+                <div>Камера: 12 Мп;</div>
+                <div>Кількість ядер: 6;</div>
+                <div>Стандарт захисту: IP67;</div>
+                <div>Оперативна пам'ять: 3 Гб;</div>
+                <a href="#">Характеристики</a>
+              </div>
+              <div class="col-5" >
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title"
+                        th:text="'$' + ${product.price}"></h5>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="#{product.inStock}"></h6>
+                    <p class="card-text">Нова пошта 35 грн</p>
+                    <a href="#" th:onclick="'addProduct('+${product.id}+');'" class="btn btn-primary btn-lg" th:text="#{button.buy}"></a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
+        </div>
       </div>
-    </div>
+      <!--<div class="col-1">-->
+        <!--<div class="card" th:each="image: ${product.images}">-->
+          <!--<img class="card-img-top click-img" th:src="@{'~/image/' + ${image.path}}"-->
+               <!--alt="Card image cap">-->
+          <!--</img>-->
+        <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="col-3">-->
+        <!--s-->
+      <!--</div>-->
+
+
     <div class="row">
      <div class="col">
        <ul class="nav nav-tabs">
@@ -122,15 +188,228 @@
        </ul>
 
        <div class="tab-content">
-           <div class="tab-pane container active" id="tab-about-goods">sdf...</div>
-           <div class="tab-pane container fade" id="tab-characters">cvb</div>
+           <div class="tab-pane container active" id="tab-about-goods">
+             <div class="row">
+               <div class="col">
+                 <h5 th:text="#{title.description}"></h5>
+               </div>
+             </div>
+             <div class="row">
+               <div class="col">
+                 <h3 class="d-flex justify-content-center">iPhone X</h3>
+                 <p>
+                   Ми завжди мріяли зробити iPhone одним великим дисплеєм.
+                   Настільки разючим дисплеєм, щоб ви забували про сам фізичний пристрій.
+                   І настільки розумним пристроєм, щоб він реагував на дотик,
+                   слово та навіть погляд. iPhone X втілює мрію в реальність.
+                   Це смартфон майбутнього.
+                 </p>
+                 <div class="d-flex justify-content-center">
+                   <img  src="https://i.eldorado.ua/promotion_images/2209.jpg"/>
+                 </div>
+
+                 <h3 class="d-flex justify-content-center">SUPER RETINA OLED-ДИСПЛЕЙ 5.8</h3>
+                 <p>
+                   5.8-дюймовий Super Retina-дисплей,
+                   виконаний за технологією OLED, підтримує роздільну здатність 2436 х 1125 точок,
+                   а ідеальну кольоропередачу за будь-яких умов освітлення забезпечує технологія True Tone
+                   і підтримка HDR. Більшу частину передньої панелі смартфона займає саме дисплей,
+                   так як дизайн виконаний у безрамковому стилі
+                 </p>
+                 <div class="d-flex justify-content-center">
+                   <img src="https://i.eldorado.ua/promotion_images/2163.png"/>
+                 </div>
+
+                 <h3 class="d-flex justify-content-center">КАМЕРА TRUEDEPTH</h3>
+                 <p>
+                   За бездоганні selfie відповідає покращена камера TrueDepth
+                   з роздільною здатністю 7 Мп і світлосилою ƒ/2.2.
+                   Насолоджуйтеся дивовижними світловими ефектами, активувавши функцію портретного освітлення.
+                   У вашому розпорядженні – такі схеми взаємодії світла з рисами вашого обличчя: денний,
+                   студійний, контурний, сценічний і сценічний моно.
+                   Здивуйте своїх підписників виразними фотографіями з художньо розмитим фоном.
+                 </p>
+                 <div class="d-flex justify-content-center">
+                   <img src="https://i.eldorado.ua/promotion_images/2171.png"/>
+                 </div>
+
+                 <h3 class="d-flex justify-content-center">FACE ID</h3>
+                 <p>
+                   На зміну звичної системи розпізнавання відбитку пальців Touch ID прийшла потужна
+                   і безпечна система аутентифікації Face ID – розпізнавання користувача по його обличчю.
+                   Володіючи технологіями машинного навчання,
+                   процесор A11 Bionic впізнає вас навіть у новому образі.
+                   Тому експериментуйте зі стрижкою, носіть окуляри, міняйте капелюхи.
+                   І нехай ваші знайомі губляться у здогадах, чи це ви – iPhone X ніколи не помилиться.
+                 </p>
+                 <div class="d-flex justify-content-center">
+                   <img src="https://i.eldorado.ua/promotion_images/2177.png"/>
+                 </div>
+
+               </div>
+             </div>
+             <div class="row">
+               <div class="col">
+                 <h5 th:text="#{title.main_characters}"></h5>
+                 <div class="main-characteristics">
+                   <div width="400px">
+                     <div>Діагональ екрану: 5.8";</div>
+                     <div>Роздільна здатність дисплея: 2436x1125;</div>
+                     <div>Камера: 12 Мп;</div>
+                     <div>Кількість ядер: 6;</div>
+                     <div>Стандарт захисту: IP67;</div>
+                     <div>Оперативна пам'ять: 3 Гб;</div>
+                     <a href="#">Всі Характеристики</a>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+           <div class="tab-pane container fade" id="tab-characters">
+             <table class="table table-striped">
+               <thead>
+                 <tr>
+                   <h3>Технічні характеристики</h3>
+                 </tr>
+               </thead>
+               <tbody>
+                 <tr>
+                   <th scope="row">Основні</th>
+                   <td></td>
+                 </tr>
+                 <tr>
+                   <td>Тип пристрою:</td>
+                   <td>Смартфон</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">Зв'язок</th>
+                   <td></td>
+                 </tr>
+                 <tr>
+                   <td>Стандарти зв'язку:</td>
+                   <td>	GSM, 3G, 4G (LTE)</td>
+                 </tr>
+                 <tr>
+                   <td>Кількість sim-карт:</td>
+                   <td>1 SIM</td>
+                 </tr>
+                 <tr>
+                   <td>Формат SIM-карти:</td>
+                   <td>Nano-SIM</td>
+                 </tr>
+
+                 <tr>
+                   <th scope="row">Екран</th>
+                   <td></td>
+                 </tr>
+                 <tr>
+                   <td>Діагональ екрану:</td>
+                   <td>5.8</td>
+                 </tr>
+                 <tr>
+                   <td>Роздільна здатність дисплея:</td>
+                   <td>2436x1125</td>
+                 </tr>
+                 <tr>
+                   <td>Щільність пікселів, ppi:</td>
+                   <td>458</td>
+                 </tr>
+                 <tr>
+                   <td>Тип дисплею:</td>
+                   <td>Super Retina (OLED)</td>
+                 </tr>
+
+                 <tr>
+                   <th scope="row">Процесор</th>
+                   <td></td>
+                 </tr>
+                 <tr>
+                   <td>Процесор:</td>
+                   <td>A11 Bionic</td>
+                 </tr>
+                 <tr>
+                   <td>Кількість ядер:</td>
+                   <td>6</td>
+                 </tr>
+                 <tr>
+                   <td>Частота процесора:</td>
+                   <td>2.39 ГГц</td>
+                 </tr>
+                 <tr>
+                   <td>Графічний процесор:</td>
+                   <td>M11</td>
+                 </tr>
+
+                 <tr>
+                   <th scope="row">Пам'ять</th>
+                   <td></td>
+                 </tr>
+                 <tr>
+                   <td>Внутрішня пам'ять:</td>
+                   <td>64 Гб</td>
+                 </tr>
+                 <tr>
+                   <td>Оперативна пам'ять:</td>
+                   <td>3 Гб</td>
+                 </tr>
+                 <tr>
+                   <td>Слот для карти пам'яті:</td>
+                   <td>Немає</td>
+                 </tr>
+
+                 <tr>
+                   <th scope="row">Камера</th>
+                   <td></td>
+                 </tr>
+                 <tr>
+                   <td>Камера:</td>
+                   <td>12 Мп</td>
+                 </tr>
+                 <tr>
+                   <td>Діафрагма:</td>
+                   <td>f/1.8 + f/2.4</td>
+                 </tr>
+                 <tr>
+                   <td>Запис відео:</td>
+                   <td>4К UHD (3840x2160)</td>
+                 </tr>
+                 <tr>
+                   <td>Оптична стабілізація:</td>
+                   <td>Є</td>
+                 </tr>
+                 <tr>
+                   <td>Кількість осей стабілізації:</td>
+                   <td>3</td>
+                 </tr>
+                 <tr>
+                   <td>Фокусування:</td>
+                   <td>Гібридне</td>
+                 </tr>
+                 <tr>
+                   <td>Спалах основної камери:</td>
+                   <td>Є</td>
+                 </tr>
+                 <tr>
+                   <td>Спалах основної камери:</td>
+                   <td>7 Мп f/2.2</td>
+                 </tr>
+                 <tr>
+                   <td>Додатково:</td>
+                   <td>Запис відео 4K UHD 60 fps
+                     Запис відео Slow Motion FullHD 240 Zoom 10x Шестілінзовий об'єктив Спалах True Tone Quad-LED Захист об'єктива сапфіровим склом Сенсор BSI Гібридний ІК-фільтр
+                     </td>
+                 </tr>
+               </tbody>
+             </table>
+           </div>
            <div class="tab-pane container fade" id="tab-accessories">dfbb</div>
      </div>
 
      </div>
     </div>
-  </div>
 
+    <div th:replace="fragments/footer :: footer"></div>
+  </div>
 
 
 </body>
