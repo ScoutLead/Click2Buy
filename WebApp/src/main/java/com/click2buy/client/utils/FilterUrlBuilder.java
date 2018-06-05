@@ -33,9 +33,17 @@ public class FilterUrlBuilder {
       ((ArrayNode)parents.get(0).get(key).get("$in")).add(maker);
     } else {
       if(filterBy.fields().hasNext()) {
-        ((ObjectNode)filterBy.get("$and")).set(key, new ObjectMapper()
-          .createObjectNode()
-          .putArray("$in").add(maker));
+        if(filterBy.get("$and").isArray()) {
+          ((ArrayNode)filterBy.get("$and")).add(new ObjectMapper()
+            .createObjectNode().set(key, (new ObjectMapper()
+              .createObjectNode().putArray("$in").add(maker))
+            ));
+        } else {
+          ((ObjectNode)filterBy.get("$and")).set(key, new ObjectMapper()
+            .createObjectNode()
+            .putArray("$in").add(maker));
+        }
+
       } else {
         ((ObjectNode)filterBy).set(key, new ObjectMapper()
           .createObjectNode().set("$in",

@@ -5,6 +5,7 @@
   <meta charset="UTF-8"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/header.css}"/>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/footer.css}"/>
   <link rel="stylesheet" type="text/css" th:href="@{/css/goods.css}"/>
   <link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"/>
@@ -212,16 +213,10 @@
         </div>
       </div>
     </div>
-
-
-
-
-
-
-
-
-
-
+    <div th:replace="fragments/footer :: footer"></div>
   </div>
+
+
+
 </body>
 </html>

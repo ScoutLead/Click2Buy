@@ -1,3 +1,112 @@
 .checked {
   color: orange;
 }
+
+.table tbody {
+  display: flex;
+  flex-direction: column;
+}
+
+.table tr {
+  display: flex;
+  width: 100%;
+}
+
+.table td, th {
+  flex: 1;
+}
+
+/*  bhoechie tab */
+div.bhoechie-tab-container{
+  z-index: 10;
+  background-color: #ffffff;
+  padding: 0 !important;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  border:1px solid #ddd;
+  margin-left: 50px;
+  background-clip: padding-box;
+  opacity: 0.97;
+  filter: alpha(opacity=97);
+  display: flex;
+  margin-bottom: 20px;
+}
+div.bhoechie-tab-menu{
+  padding-right: 0;
+  padding-left: 0;
+  padding-bottom: 0;
+}
+div.bhoechie-tab-menu div.list-group{
+  margin-bottom: 0;
+}
+div.bhoechie-tab-menu div.list-group>a{
+  margin-bottom: 0;
+}
+div.bhoechie-tab-menu div.list-group>a .glyphicon,
+div.bhoechie-tab-menu div.list-group>a .fa {
+  color: #5A55A3;
+}
+div.bhoechie-tab-menu div.list-group>a:first-child{
+  border-top-right-radius: 0;
+  -moz-border-top-right-radius: 0;
+}
+div.bhoechie-tab-menu div.list-group>a:last-child{
+  border-bottom-right-radius: 0;
+  -moz-border-bottom-right-radius: 0;
+}
+div.bhoechie-tab-menu div.list-group>a.active,
+div.bhoechie-tab-menu div.list-group>a.active .glyphicon,
+div.bhoechie-tab-menu div.list-group>a.active .fa{
+  background-color: #5A55A3;
+  background-image: #5A55A3;
+  color: #ffffff;
+}
+
+div.bhoechie-tab-content{
+  background-color: #ffffff;
+  /* border: 1px solid #eeeeee; */
+}
+.bhoechie-tab {
+  padding: 0!important;
+}
+
+div.bhoechie-tab div.bhoechie-tab-content:not(.active){
+  display: none;
+}
+
+.preview {
+  width: 85px;
+  height: 82px;
+  background-size: cover;
+}
+
+a.list-group-item {
+  padding: 0!important;
+  width: 87px;
+}
+
+a.list-group-item + a.list-group-item {
+  margin-top: 10px;
+}
+
+.asset {
+  width: 295px;
+  height: 405px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+div.characteristics {
+  margin-left: 20px!important;
+}
+
+.active .preview {
+  border: 2px solid #00a1ff;
+}
+
+.main-characteristics {
+  display: flex;
+  justify-content: center;
+}
+

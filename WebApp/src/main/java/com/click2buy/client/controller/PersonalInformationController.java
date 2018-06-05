@@ -43,4 +43,10 @@ public class PersonalInformationController {
     model.put("goodsInBucketJson", value);
     return "bucket";
   }
+
+  @GetMapping("/successOrder.html")
+  public String successOrder(HttpServletResponse response) {
+    response.addCookie(new Cookie("bucket", ""));
+    return "successOrder";
+  }
 }
