@@ -97,6 +97,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         "/bucket/**",
         "/image/**",
         "/goods/**",
+        "/regions/**",
+        "/settlements/**",
         "/favicon.ico",
         "/**/*.html",
         "/**/*.css",

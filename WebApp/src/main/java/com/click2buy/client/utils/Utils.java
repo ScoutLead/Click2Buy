@@ -9,7 +9,10 @@ import com.fasterxml.jackson.databind.ObjectReader;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.IntStream;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 public class Utils {
   public static List<String> convertToArray(JsonNode node) {
@@ -37,5 +40,34 @@ public class Utils {
 
   private static List<Integer> generateIndexes(int first, int last) {
     return IntStream.rangeClosed(first, last).boxed().collect(toList());
+  }
+
+  public static <T> CompletableFuture<T> buildCompletableFuture(
+    final ListenableFuture<T> listenableFuture
+  ) {
+    //create an instance of CompletableFuture
+    CompletableFuture<T> completable = new CompletableFuture<T>() {
+      @Override
+      public boolean cancel(boolean mayInterruptIfRunning) {
+        // propagate cancel to the listenable future
+        boolean result = listenableFuture.cancel(mayInterruptIfRunning);
+        super.cancel(mayInterruptIfRunning);
+        return result;
+      }
+    };
+
+    // add callback
+    listenableFuture.addCallback(new ListenableFutureCallback<T>() {
+      @Override
+      public void onSuccess(T result) {
+        completable.complete(result);
+      }
+
+      @Override
+      public void onFailure(Throwable t) {
+        completable.completeExceptionally(t);
+      }
+    });
+    return completable;
   }
 }
