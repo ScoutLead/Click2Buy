@@ -19,9 +19,62 @@
   <title th:text="#{bucket.name}"></title>
   <script th:inline="javascript">
 
+    var regions = [];
+    var settlements = [];
+
     $( function() {
-        setSum(sum())
+        setSum(sum());
+        setRegion();
+        setSettlements();
+        setStorage();
     } );
+
+    function setRegion() {
+      $.get( "regions", function(data) {
+        regions = data;
+        setOptions('#inputRegion', data.map(function(x) {return x.name}), 9);
+      })
+    }
+
+    function setStorage() {
+
+      $('#inputSettlement').on('change', function() {
+        if(settlements[this.value].warehouse) {
+          $.get( "settlements/" + settlements[this.value].id + "/warehouses", function(data) {
+            setOptions('#inputStorage', data.map(function(x) {return x.name}), 0);
+          })
+        } else {
+          setOptions('#inputStorage', {0: "Немає відділень"}, 0);
+        }
+
+      });
+    }
+
+    function setSettlements() {
+      $('#inputRegion').on('change', function() {
+        $.get( "regions/" + regions[this.value].id + "/settlements", function(data) {
+          settlements = data;
+          setOptions('#inputSettlement', data.map(function(x) {return x.name}), 0);
+        })
+      });
+    }
+
+    function setOptions(id, items, selected) {
+
+      var select = $(id);
+      if(select.prop) {
+        var options = select.prop('options');
+      }
+      else {
+        var options = select.attr('options');
+      }
+      $('option', select).remove();
+
+      $.each(items, function(val, text) {
+        options[options.length] = new Option(text, val);
+      });
+      select.val(selected);
+    }
 
     function setSum(sum) {
       var t = [[#{together}]];
@@ -115,13 +168,19 @@
               <input type="text" class="form-control" id="inputName4" th:placeholder="#{input.name}"/>
             </div>
           </div>
+
+          <h6  th:text="#{label.delivery}"></h6>
           <div class=" form-row">
-            <div class="form-group row col-4">
-              <label for="inputState" class="col-6 col-form-label" th:text="#{label.delivery}"></label>
-              <div class="col-6">
-                <select id="inputState" class="form-control">
-                  <option th:selected = "${true}">Львів</option>
-                  <option>Київ</option>
+            <div class="form-group row col-12">
+              <label for="inputRegion" class="col-2 col-form-label" th:text="#{label.delivery.region}"></label>
+              <div class="col-4">
+                <select id="inputRegion" class="form-control">
+                </select>
+              </div>
+              <label for="inputSettlement" class="col-2 col-form-label" th:text="#{label.delivery.settlement}"></label>
+              <div class="col-4">
+                <select id="inputSettlement" class="form-control">
+                  <option th:selected = "${true}">Вибрати...</option>
                 </select>
               </div>
             </div>
